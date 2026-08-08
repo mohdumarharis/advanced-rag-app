@@ -1,23 +1,14 @@
-langchain
-langchain-community
-langchain-openai
-chromadb
-sentence-transformers
-pypdf
+langchain==0.1.20
+langchain-community==0.0.38
+langchain-core==0.1.50
+langchain-openai==0.1.6
+langchain-text-splitters==0.0.1
+chromadb==0.4.24
+sentence-transformers==2.2.2
+pypdf==4.0.1
 python-dotenv
-# Core LangChain
-langchain-core
-langchain-openai
-langchain-text-splitters
-
-
-# Document parsing
 python-pptx
 Pillow
-
-# OCR (requires system Tesseract: brew install tesseract / apt install tesseract-ocr)
 pytesseract
-
-# Hybrid search (BM25)
 rank-bm25
 pymupdf
