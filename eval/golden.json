@@ -1,0 +1,113 @@
+{
+  "_readme": [
+    "Golden evaluation set. Ground truth is expressed as TEXT MARKERS, not chunk IDs,",
+    "so the set stays valid when you change chunk_size, the splitter, or the embedding",
+    "model — which are exactly the things you want to measure.",
+    "",
+    "  relevant_contains  A chunk counts as relevant if it contains ALL of these strings.",
+    "                     Matching is case-insensitive, NFKC-normalized (so the PDF's",
+    "                     'ﬁ'/'ﬀ' ligatures match plain 'fi'/'ff'), and whitespace-collapsed.",
+    "  answer_contains    Markers checked against the generated answer.",
+    "  answer_match       'all' (default) or 'any'.",
+    "  unanswerable       true when the corpus genuinely cannot answer it. Retrieval is",
+    "                     not scored; the model is scored on whether it declines.",
+    "",
+    "Add cases whenever you hit a real failure — that is what stops it regressing."
+  ],
+  "cases": [
+    {
+      "id": "ram-ur-expansion",
+      "question": "What does RAM-UR stand for?",
+      "relevant_contains": ["unobservable references"],
+      "answer_contains": ["random attention", "unobserv", "reference"]
+    },
+    {
+      "id": "three-axioms",
+      "question": "Which three axioms characterize the RAM-UR in Theorem 1?",
+      "relevant_contains": ["EDA, C-WARP and EXP"],
+      "answer_contains": ["EDA", "C-WARP", "EXP"]
+    },
+    {
+      "id": "eda-expansion",
+      "question": "What does the axiom EDA stand for?",
+      "relevant_contains": ["Existence of a Dominant Alternative"],
+      "answer_contains": ["existence of a dominant alternative"]
+    },
+    {
+      "id": "cwarp-expansion",
+      "question": "What does C-WARP stand for, and why is it named that?",
+      "relevant_contains": ["Certainty WARP"],
+      "answer_contains": ["certainty warp", "certainty weak axiom"],
+      "answer_match": "any"
+    },
+    {
+      "id": "ira-functional-form",
+      "question": "What is the functional form of the choice probability in the RAM-UR-IRA model?",
+      "relevant_contains": ["strict total order", "attention parameter"],
+      "answer_contains": ["γ", "gamma"],
+      "answer_match": "any"
+    },
+    {
+      "id": "author",
+      "question": "Who is the author of this paper?",
+      "relevant_contains": ["Varun Bansal"],
+      "answer_contains": ["bansal"]
+    },
+    {
+      "id": "jel-classification",
+      "question": "What are the JEL classification codes for this paper?",
+      "relevant_contains": ["JEL Classification"],
+      "answer_contains": ["D01", "D91", "Z13"]
+    },
+    {
+      "id": "kovach-difference",
+      "question": "How does the RAM-UR differ from Kovach and Suleymanov (2023)?",
+      "relevant_contains": ["Kovach and Suleymanov"],
+      "answer_contains": ["observable", "status quo", "primitive"],
+      "answer_match": "any"
+    },
+    {
+      "id": "ira-origin",
+      "question": "Who introduced the independent random attention (IRA) form?",
+      "relevant_contains": ["Manzini and Mariotti"],
+      "answer_contains": ["manzini", "mariotti"]
+    },
+    {
+      "id": "default-alternative",
+      "question": "How is the default alternative interpreted in the model?",
+      "relevant_contains": ["interpret it as abstention"],
+      "answer_contains": ["abstention", "failing to make a choice"],
+      "answer_match": "any"
+    },
+    {
+      "id": "no-dataset",
+      "question": "What dataset was used to empirically test the model?",
+      "unanswerable": true,
+      "answer_contains": [
+        "don't know", "do not know", "does not", "no dataset",
+        "not include", "not provide", "theoretical", "no empirical"
+      ],
+      "answer_match": "any"
+    },
+    {
+      "id": "no-python-code",
+      "question": "Does the paper include Python code?",
+      "unanswerable": true,
+      "answer_contains": [
+        "don't know", "do not know", "does not", "no python",
+        "not include", "not contain", "theoretical"
+      ],
+      "answer_match": "any"
+    },
+    {
+      "id": "out-of-domain",
+      "question": "What is the capital of France?",
+      "unanswerable": true,
+      "answer_contains": [
+        "don't know", "do not know", "no information",
+        "not mentioned", "not discussed", "does not"
+      ],
+      "answer_match": "any"
+    }
+  ]
+}

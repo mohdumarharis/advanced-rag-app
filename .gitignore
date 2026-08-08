@@ -1,0 +1,32 @@
+# Secrets — never commit
+.env
+.env.*
+!.env.example
+
+# Virtualenvs
+.ragenv/
+.venv/
+venv/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# Rebuildable index artifacts
+chroma_db/
+
+# Source corpus — bring your own documents; don't redistribute others' papers
+docs/*
+!docs/.gitkeep
+
+# Model / HF caches
+.cache/
+models/
+
+# Local tooling config
+.claude/settings.local.json
+
+# macOS
+.DS_Store

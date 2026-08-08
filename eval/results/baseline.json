@@ -1,0 +1,360 @@
+{
+  "k": 6,
+  "chunks_indexed": 70,
+  "cases_scored": 10,
+  "broken_cases": [],
+  "retrieval": {
+    "dense": {
+      "hit": 0.5,
+      "mrr": 0.42000000000000004,
+      "recall": 0.22214285714285714
+    },
+    "sparse": {
+      "hit": 0.8,
+      "mrr": 0.6666666666666666,
+      "recall": 0.5257142857142857
+    },
+    "fused": {
+      "hit": 0.8,
+      "mrr": 0.4366666666666667,
+      "recall": 0.46142857142857147
+    },
+    "reranked": {
+      "hit": 0.8,
+      "mrr": 0.6666666666666666,
+      "recall": 0.5578571428571429
+    }
+  },
+  "per_case": [
+    {
+      "id": "ram-ur-expansion",
+      "gold_chunks": 4,
+      "stages": {
+        "dense": {
+          "hit": 0.0,
+          "mrr": 0.0,
+          "recall": 0.0
+        },
+        "sparse": {
+          "hit": 1.0,
+          "mrr": 0.3333333333333333,
+          "recall": 0.25
+        },
+        "fused": {
+          "hit": 1.0,
+          "mrr": 0.25,
+          "recall": 0.25
+        },
+        "reranked": {
+          "hit": 0.0,
+          "mrr": 0.0,
+          "recall": 0.0
+        }
+      },
+      "generation": {
+        "pass": true,
+        "answer": "RAM-UR stands for \"Random Attention Model with Unobservable References.\""
+      }
+    },
+    {
+      "id": "three-axioms",
+      "gold_chunks": 1,
+      "stages": {
+        "dense": {
+          "hit": 0.0,
+          "mrr": 0.0,
+          "recall": 0.0
+        },
+        "sparse": {
+          "hit": 1.0,
+          "mrr": 1.0,
+          "recall": 1.0
+        },
+        "fused": {
+          "hit": 1.0,
+          "mrr": 0.2,
+          "recall": 1.0
+        },
+        "reranked": {
+          "hit": 1.0,
+          "mrr": 0.3333333333333333,
+          "recall": 1.0
+        }
+      },
+      "generation": {
+        "pass": true,
+        "answer": "The three axioms that characterize the RAM-UR in Theorem 1 are:\n\n1. Existence of a Dominant Alternative (EDA)  \n2. Certainty WARP (C-WARP)  \n3. EXP"
+      }
+    },
+    {
+      "id": "eda-expansion",
+      "gold_chunks": 2,
+      "stages": {
+        "dense": {
+          "hit": 1.0,
+          "mrr": 1.0,
+          "recall": 1.0
+        },
+        "sparse": {
+          "hit": 1.0,
+          "mrr": 1.0,
+          "recall": 1.0
+        },
+        "fused": {
+          "hit": 1.0,
+          "mrr": 1.0,
+          "recall": 1.0
+        },
+        "reranked": {
+          "hit": 1.0,
+          "mrr": 1.0,
+          "recall": 1.0
+        }
+      },
+      "generation": {
+        "pass": true,
+        "answer": "The axiom EDA stands for \"Existence of a Dominant Alternative.\""
+      }
+    },
+    {
+      "id": "cwarp-expansion",
+      "gold_chunks": 2,
+      "stages": {
+        "dense": {
+          "hit": 1.0,
+          "mrr": 1.0,
+          "recall": 0.5
+        },
+        "sparse": {
+          "hit": 0.0,
+          "mrr": 0.0,
+          "recall": 0.0
+        },
+        "fused": {
+          "hit": 1.0,
+          "mrr": 0.25,
+          "recall": 0.5
+        },
+        "reranked": {
+          "hit": 1.0,
+          "mrr": 1.0,
+          "recall": 0.5
+        }
+      },
+      "generation": {
+        "pass": true,
+        "answer": "C-WARP stands for \"Certainty Weak Axiom of Revealed Preference.\" It is named that because it captures revealed preference only when an alternative is chosen with certainty from a menu."
+      }
+    },
+    {
+      "id": "ira-functional-form",
+      "gold_chunks": 2,
+      "stages": {
+        "dense": {
+          "hit": 1.0,
+          "mrr": 1.0,
+          "recall": 0.5
+        },
+        "sparse": {
+          "hit": 1.0,
+          "mrr": 0.3333333333333333,
+          "recall": 0.5
+        },
+        "fused": {
+          "hit": 1.0,
+          "mrr": 1.0,
+          "recall": 0.5
+        },
+        "reranked": {
+          "hit": 1.0,
+          "mrr": 0.3333333333333333,
+          "recall": 0.5
+        }
+      },
+      "generation": {
+        "pass": true,
+        "answer": "The functional form of the choice probability in the RAM-UR-IRA model is:\n\np(x, A) = \u03b3(x) \u220f y\u2208A; y\u227bx (1 \u2212 \u03b3(y)) \n\nwhere:\n- A \u2208 X is a non-empty subset of alternatives,\n- x \u2208 A is an alternative,\n- \u03b3(x) is the attention parameter for alterna"
+      }
+    },
+    {
+      "id": "author",
+      "gold_chunks": 1,
+      "stages": {
+        "dense": {
+          "hit": 0.0,
+          "mrr": 0.0,
+          "recall": 0.0
+        },
+        "sparse": {
+          "hit": 0.0,
+          "mrr": 0.0,
+          "recall": 0.0
+        },
+        "fused": {
+          "hit": 0.0,
+          "mrr": 0.0,
+          "recall": 0.0
+        },
+        "reranked": {
+          "hit": 0.0,
+          "mrr": 0.0,
+          "recall": 0.0
+        }
+      },
+      "generation": {
+        "pass": false,
+        "answer": "I don't know based on these documents."
+      }
+    },
+    {
+      "id": "jel-classification",
+      "gold_chunks": 1,
+      "stages": {
+        "dense": {
+          "hit": 0.0,
+          "mrr": 0.0,
+          "recall": 0.0
+        },
+        "sparse": {
+          "hit": 1.0,
+          "mrr": 1.0,
+          "recall": 1.0
+        },
+        "fused": {
+          "hit": 1.0,
+          "mrr": 0.16666666666666666,
+          "recall": 1.0
+        },
+        "reranked": {
+          "hit": 1.0,
+          "mrr": 1.0,
+          "recall": 1.0
+        }
+      },
+      "generation": {
+        "pass": true,
+        "answer": "The JEL classification codes for this paper are D01, D91, and Z13."
+      }
+    },
+    {
+      "id": "kovach-difference",
+      "gold_chunks": 14,
+      "stages": {
+        "dense": {
+          "hit": 1.0,
+          "mrr": 0.2,
+          "recall": 0.07142857142857142
+        },
+        "sparse": {
+          "hit": 1.0,
+          "mrr": 1.0,
+          "recall": 0.35714285714285715
+        },
+        "fused": {
+          "hit": 1.0,
+          "mrr": 0.5,
+          "recall": 0.21428571428571427
+        },
+        "reranked": {
+          "hit": 1.0,
+          "mrr": 1.0,
+          "recall": 0.42857142857142855
+        }
+      },
+      "generation": {
+        "pass": true,
+        "answer": "The RAM-UR (Random Attention Model with Unobserved References) differs from Kovach and Suleymanov (2023) in that it deals with unobservable references, whereas Kovach and Suleymanov (2023) focus on observable references. In RAM-UR, referenc"
+      }
+    },
+    {
+      "id": "ira-origin",
+      "gold_chunks": 20,
+      "stages": {
+        "dense": {
+          "hit": 1.0,
+          "mrr": 1.0,
+          "recall": 0.15
+        },
+        "sparse": {
+          "hit": 1.0,
+          "mrr": 1.0,
+          "recall": 0.15
+        },
+        "fused": {
+          "hit": 1.0,
+          "mrr": 1.0,
+          "recall": 0.15
+        },
+        "reranked": {
+          "hit": 1.0,
+          "mrr": 1.0,
+          "recall": 0.15
+        }
+      },
+      "generation": {
+        "pass": true,
+        "answer": "The independent random attention (IRA) form was introduced by Manzini and Mariotti (2014)."
+      }
+    },
+    {
+      "id": "default-alternative",
+      "gold_chunks": 1,
+      "stages": {
+        "dense": {
+          "hit": 0.0,
+          "mrr": 0.0,
+          "recall": 0.0
+        },
+        "sparse": {
+          "hit": 1.0,
+          "mrr": 1.0,
+          "recall": 1.0
+        },
+        "fused": {
+          "hit": 0.0,
+          "mrr": 0.0,
+          "recall": 0.0
+        },
+        "reranked": {
+          "hit": 1.0,
+          "mrr": 1.0,
+          "recall": 1.0
+        }
+      },
+      "generation": {
+        "pass": true,
+        "answer": "The default alternative is interpreted as abstention or failing to make a choice. It is chosen only if none of the alternatives in the menu are paid attention to."
+      }
+    }
+  ],
+  "generation": {
+    "answerable_correct": 0.9,
+    "abstention_correct": 1.0,
+    "unanswerable_cases": [
+      {
+        "id": "no-dataset",
+        "pass": true,
+        "answer": "I don't know based on these documents."
+      },
+      {
+        "id": "no-python-code",
+        "pass": true,
+        "answer": "I don't know based on these documents."
+      },
+      {
+        "id": "out-of-domain",
+        "pass": true,
+        "answer": "I don't know based on these documents."
+      }
+    ]
+  },
+  "elapsed_s": 40.9,
+  "settings": {
+    "chunk_size": 1200,
+    "chunk_overlap": 200,
+    "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+    "reranker_model": "BAAI/bge-reranker-base",
+    "rrf_k": 60,
+    "rerank_pool": 15
+  }
+}
