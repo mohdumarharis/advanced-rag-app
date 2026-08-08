@@ -32,13 +32,17 @@ def format_docs(docs: List) -> str:
     return "\n\n".join(lines)
 
 
+def answer_from_docs(question: str, docs: List) -> str:
+    """Generate an answer from documents that have already been retrieved."""
+    context = format_docs(docs)
+    messages = _prompt.format_messages(context=context, question=question)
+    return get_llm().invoke(messages).content
+
+
 def invoke(question: str, retriever) -> Tuple[str, List]:
     """
     Run the full RAG pipeline for a single question.
     Returns (answer_text, source_documents).
     """
     docs = retriever.retrieve(question)
-    context = format_docs(docs)
-    messages = _prompt.format_messages(context=context, question=question)
-    answer = get_llm().invoke(messages).content
-    return answer, docs
+    return answer_from_docs(question, docs), docs

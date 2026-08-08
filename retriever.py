@@ -1,10 +1,12 @@
 """Hybrid retriever: dense (Chroma) + sparse (BM25) + RRF + cross-encoder rerank."""
-from typing import Dict, List
+from typing import Callable, Dict, List, Optional, Tuple
 
 from langchain_community.vectorstores import Chroma
 from langchain_core.documents import Document
 from rank_bm25 import BM25Okapi
 from sentence_transformers import CrossEncoder
+
+Scored = Tuple[Document, float]
 
 
 class HybridRRFRetriever:
@@ -65,30 +67,72 @@ class HybridRRFRetriever:
         ordered = sorted(scores.items(), key=lambda x: x[1], reverse=True)
         return [doc_map[cid] for cid, _ in ordered][:self.rerank_pool]
 
-    def _rerank(self, query: str, docs: List[Document]) -> List[Document]:
+    def _rerank(self, query: str, docs: List[Document]) -> List[Scored]:
+        """Cross-encoder scores, highest first. Scores are raw logits."""
         if not docs:
             return []
         pairs = [(query, doc.page_content) for doc in docs]
-        scored = list(zip(docs, self.reranker.predict(pairs)))
+        scored = list(zip(docs, (float(s) for s in self.reranker.predict(pairs))))
         scored.sort(key=lambda x: x[1], reverse=True)
-        return [doc for doc, _ in scored]
+        return scored
 
-    def retrieve_stages(self, query: str) -> Dict[str, List[Document]]:
+    def _pipeline(self, query: str, on_stage: Optional[Callable[[str], None]] = None):
+        def note(stage: str) -> None:
+            if on_stage:
+                on_stage(stage)
+
+        note("dense")
+        dense = self._dense(query)
+        note("sparse")
+        sparse = self._sparse(query)
+        note("fused")
+        fused = self._fuse(dense, sparse)
+        note("reranked")
+        return dense, sparse, fused, self._rerank(query, fused)
+
+    def retrieve_stages(
+        self, query: str, on_stage: Optional[Callable[[str], None]] = None
+    ) -> Dict[str, List[Document]]:
         """
         Every intermediate stage, untruncated.
 
         The eval harness scores each stage separately so you can see what
         fusion and reranking actually contribute over dense retrieval alone.
         """
-        dense = self._dense(query)
-        sparse = self._sparse(query)
-        fused = self._fuse(dense, sparse)
+        dense, sparse, fused, scored = self._pipeline(query, on_stage)
         return {
             "dense": dense,
             "sparse": sparse,
             "fused": fused,
-            "reranked": self._rerank(query, fused),
+            "reranked": [doc for doc, _ in scored],
         }
 
+    def retrieve_scored(
+        self, query: str, on_stage: Optional[Callable[[str], None]] = None
+    ) -> List[Scored]:
+        """Top-k documents paired with their cross-encoder score."""
+        return self._pipeline(query, on_stage)[3][:self.top_k]
+
+    def retrieve_detailed(
+        self, query: str, on_stage: Optional[Callable[[str], None]] = None
+    ) -> Tuple[List[Scored], Dict[str, int]]:
+        """
+        Top-k scored documents plus how many candidates each stage produced,
+        in a single pass over the pipeline.
+        """
+        dense, sparse, _fused, scored = self._pipeline(query, on_stage)
+        top = scored[:self.top_k]
+        counts = {
+            "dense": len(dense),
+            "sparse": len(sparse),
+            # Distinct candidates the two retrievers found between them. Always
+            # reporting the pooled list would just echo rerank_pool; the union
+            # shows how much dense and sparse actually agreed.
+            "fused": len({self._key(d) for d in dense} |
+                         {self._key(d) for d in sparse}),
+            "reranked": len(top),
+        }
+        return top, counts
+
     def retrieve(self, query: str) -> List[Document]:
-        return self.retrieve_stages(query)["reranked"][:self.top_k]
+        return [doc for doc, _ in self.retrieve_scored(query)]

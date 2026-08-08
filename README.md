@@ -1,7 +1,34 @@
 # advanced-rag-app
 
-A retrieval-augmented generation pipeline over local documents (PDF, PPTX, TXT, MD),
-built on hybrid retrieval and Azure OpenAI.
+**Hybrid-retrieval RAG over your own documents — dense + BM25, reciprocal rank fusion,
+and cross-encoder reranking, with an eval harness that makes every change measurable.**
+
+Ask questions about local PDFs, slide decks, and notes. Answers are grounded in retrieved
+passages, and the console shows you the retrieval that produced them — which stage found
+what, and how confident the reranker was about each chunk it kept.
+
+```
+❯ Which three axioms characterize the RAM-UR?
+
+╭──────────────────────────────────────────────────────────────────────╮
+│  The three axioms that characterize the RAM-UR are:                  │
+│                                                                      │
+│   1 Existence of a Dominant Alternative (EDA)                        │
+│   2 Certainty WARP (C-WARP)                                          │
+│   3 Expansion (EXP)                                                  │
+╰──────────────────────────────────────────────────────────────────────╯
+
+  #   relevance        source                loc     excerpt
+ ──────────────────────────────────────────────────────────────────────
+  1   ━━━━━━╌╌ 0.73    paper.pdf             p.6     3 Characterization In the…
+  2   ━━━━━━╌╌ 0.73    paper.pdf             p.9     all alternatives, the RAM…
+  3   ━━━━━━╌╌ 0.72    paper.pdf             p.3     mean that this product wi…
+
+                     dense 15  ·  sparse 15  ·  union 23  →  answered from 6
+```
+
+Most RAG front-ends show only an answer, which makes a bad answer impossible to diagnose.
+This one keeps the pipeline visible.
 
 The retrieval path is three stages rather than the usual single vector lookup:
 
@@ -38,6 +65,19 @@ Then drop documents into `docs/`. Nothing is included in this repo; bring your o
 ```bash
 python main.py
 ```
+
+Inside the console:
+
+| Command | |
+| --- | --- |
+| `/sources` | full text of the chunks behind the last answer |
+| `/trace` | candidate counts for each retrieval stage |
+| `/config` | active models and retrieval settings |
+| `/help` | command list |
+| `/quit` | exit (Ctrl-D and Ctrl-C also work) |
+
+Ctrl-C during a query abandons that question without tearing down the loaded index, and a
+failed API call is reported in place rather than ending the session.
 
 The first run parses, chunks, embeds, and writes a Chroma index to `chroma_db/`.
 Subsequent runs hash every source file and re-embed **only what changed** — a manifest
@@ -93,6 +133,7 @@ ones drawn from your own corpus.
 | `retriever.py` | Dense + BM25 + RRF + cross-encoder rerank |
 | `llm_client.py` | Lazily constructed Azure OpenAI client |
 | `rag_chain.py` | Prompt assembly and invocation |
+| `main.py` | Interactive console |
 | `evaluate.py` | Evaluation harness |
 
 ## Known limitations
@@ -107,8 +148,10 @@ Honest list, roughly in priority order:
   baseline above). A stronger embedding model than MiniLM-L6 is the obvious next experiment.
 - **RRF is unweighted**, and on that corpus fusion scored below sparse alone. Weighted
   fusion is worth testing.
-- **Reranker scores are discarded** — top-k is returned regardless of relevance, so nothing
-  is filtered out when the corpus simply doesn't contain the answer.
-- **No error handling in the CLI loop**; an API error ends the session.
+- **Reranker scores are shown but not acted on** — top-k is returned regardless of
+  relevance, so nothing is filtered out when the corpus simply doesn't contain the answer.
+  The console displays the scores, so you can see when this happens.
 - **Document discovery is non-recursive** — files in `docs/` subdirectories are skipped.
+- **PDF line-break hyphenation isn't repaired** (`fail-\ning`), which costs BM25 a match
+  on any word split across a line.
 - **No conversation memory**, so follow-up questions aren't resolved against prior turns.

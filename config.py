@@ -12,6 +12,7 @@ AZURE_ENDPOINT: str = os.getenv("AZURE_OPENAI_ENDPOINT", "")
 AZURE_KEY: str = os.getenv("AZURE_OPENAI_KEY", "")
 AZURE_VERSION: str = os.getenv("AZURE_OPENAI_API_VERSION", "2024-08-01-preview")
 AZURE_DEPLOYMENT: str = os.getenv("AZURE_OPENAI_DEPLOYMENT", "")
+MAX_TOKENS: int = int(os.getenv("MAX_TOKENS", "100"))
 
 # Chunking
 CHUNK_SIZE: int = int(os.getenv("CHUNK_SIZE", "1200"))

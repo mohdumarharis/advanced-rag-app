@@ -149,16 +149,12 @@ def run(cases, chunks, retriever, k: int, generate: bool) -> Dict:
 
 
 def check_generation(case, docs) -> Dict:
-    from rag_chain import invoke  # imported lazily: needs Azure credentials
+    # Imported lazily: this is the only path that needs Azure credentials.
+    # Generation is scored on the retrieval we already measured, rather than
+    # on a second, separate retrieval pass.
+    from rag_chain import answer_from_docs
 
-    class _Fixed:
-        """Feed the already-retrieved docs to the chain, so generation is
-        scored on retrieval we have already measured rather than a second,
-        differently-seeded retrieval pass."""
-        def retrieve(self, _query):
-            return docs
-
-    answer, _ = invoke(case["question"], _Fixed())
+    answer = answer_from_docs(case["question"], docs)
     markers = case["answer_contains"]
     matcher = contains_any if case.get("answer_match") == "any" else contains_all
     return {"pass": matcher(answer, markers), "answer": answer.strip()[:240]}

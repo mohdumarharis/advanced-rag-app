@@ -22,5 +22,5 @@ def get_llm(temperature: float = 0.3) -> AzureChatOpenAI:
         api_version=config.AZURE_VERSION,
         azure_deployment=config.AZURE_DEPLOYMENT,
         temperature=temperature,
-        max_tokens=100,
+        max_tokens=config.MAX_TOKENS,
     )
